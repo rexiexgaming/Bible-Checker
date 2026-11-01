@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909"><title>Bible Checker | Van Dyck</title>
+<style>
+:root{color-scheme:dark;--bg:#090909;--panel:#121212;--panel2:#191919;--line:#3a2d19;--gold:#d7ad58;--gold2:#f3d99d;--text:#f5f0e6;--muted:#a99f8d;--green:#5cc58b;--red:#f08080}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#342713 0,#111 32%,#080808 72%);color:var(--text);font-family:Tahoma,Arial,sans-serif;min-height:100vh}
+header{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:#090909ed;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:1.3px}.logo{width:40px;height:40px;border:1px solid var(--gold);border-radius:13px;display:grid;place-items:center;color:var(--gold);font-size:21px;box-shadow:0 0 20px #d7ad581c}.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:2px;margin-top:4px}.tag{font-size:10px;color:var(--gold2);border:1px solid #70572d;padding:7px 11px;border-radius:30px}
+main{max-width:1550px;margin:auto;padding:22px;display:grid;grid-template-columns:minmax(320px,.86fr) minmax(0,1.4fr);gap:20px;align-items:start}
+.panel{background:linear-gradient(155deg,#171717,#101010);border:1px solid var(--line);border-radius:19px;overflow:hidden;box-shadow:0 18px 50px #0008}.panelhead{padding:17px 20px;border-bottom:1px solid #302719;display:flex;justify-content:space-between;align-items:center}.panelhead h2{font-size:15px;margin:0}.eyebrow{font-size:9px;color:var(--gold);letter-spacing:1.7px}
+.controls{padding:19px;display:grid;gap:16px}.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}
+textarea,select{width:100%;background:#090909;border:1px solid #423522;color:var(--text);border-radius:11px;padding:12px;font:14px Tahoma;outline:none}textarea{min-height:108px;resize:vertical;line-height:1.9}select:focus,textarea:focus{border-color:var(--gold)}
+.hint{font-size:10px;color:#918777;line-height:1.8;margin-top:6px}.selects{display:grid;grid-template-columns:1fr 1fr;gap:9px}.buttons{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid #80612e;background:#261d0e;color:var(--gold2);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:700;font-family:inherit}.btn:active{transform:scale(.98)}.btn.secondary{background:#191919;border-color:#42392b;color:#ded3bd}.btn:disabled{opacity:.35}
+.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{font-size:11px;padding:7px 10px;border-radius:30px;background:#211a0e;border:1px solid #765b2e;color:var(--gold2)}.chip.hit{background:#10251b;border-color:#286744;color:#91e3b5}.chip.miss{background:#2a1515;border-color:#793f3f;color:#ffb2b2}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#0b0b0b;border:1px solid #302719;border-radius:11px;padding:10px;text-align:center}.stat b{display:block;color:var(--gold2);font-size:20px}.stat span{font-size:10px;color:var(--muted)}
+.notice{padding:12px 13px;border:1px solid #4b3a1f;background:#1b160d;border-radius:11px;font-size:12px;line-height:1.8;color:#e5d4af}.notice.good{background:#102019;border-color:#286744;color:#a5e7c1}.notice.bad{background:#251313;border-color:#793f3f;color:#ffb4b4}.notice.loading{background:#151515;border-color:#49402f;color:#d7c8a9}
+.reader{min-height:600px}.readerhead{padding:16px 19px;border-bottom:1px solid #302719;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.readername{font-weight:800}.readername small{display:block;font-size:10px;color:var(--muted);font-weight:400;margin-top:5px}.nav{display:flex;gap:7px;align-items:center}.nav .btn{padding:8px 12px}.passage{padding:22px 27px;line-height:2.45;font-size:18px;max-height:calc(100vh - 190px);overflow:auto}.verse{margin:0 0 10px}.vnum{font-size:11px;color:var(--gold);vertical-align:super;margin-left:6px}.mark{background:#73551d;color:#fff0c7;border-radius:4px;padding:1px 3px;box-shadow:0 0 0 1px #d7ad5840}
+.empty{padding:55px 24px;text-align:center;color:var(--muted);line-height:2}.empty strong{color:var(--gold2)}.loadingline{height:3px;background:#2b2418;overflow:hidden}.loadingline i{display:block;height:100%;width:35%;background:var(--gold);animation:load 1.2s infinite ease-in-out}@keyframes load{from{transform:translateX(220%)}to{transform:translateX(-350%)}}
+footer{max-width:1550px;margin:auto;padding:0 22px 25px;color:#7f7668;font-size:10px;line-height:1.8}a{color:var(--gold2)}
+@media(max-width:850px){main{grid-template-columns:1fr;padding:12px;gap:12px}.reader{grid-row:1;min-height:420px}.controls-panel{grid-row:2}.passage{max-height:58vh;padding:17px;font-size:17px}.readerhead{padding:13px 14px}header{height:62px;padding:0 13px}.brand{font-size:13px}.tag{font-size:9px}.controls{padding:15px}.panelhead{padding:14px}}
+@media(max-width:390px){.selects{grid-template-columns:1fr}.stat{padding:8px 3px}.stat b{font-size:17px}}
+</style></head>
+<body>
+<header><div class="brand"><div class="logo">✦</div><div>BIBLE CHECKER<small>VAN DYCK · WORD VERIFICATION</small></div></div><div class="tag">BLACK × GOLD</div></header>
+<main>
+<section class="panel controls-panel">
+<div class="panelhead"><h2>لوحة المراجعة والتحكم</h2><span class="eyebrow">WORD TOOLS</span></div>
+<div class="controls">
+<div class="field"><label for="words">الكلمات المطلوب التحقق منها</label><textarea id="words" placeholder="اكتب الكلمات وافصل بينها بفاصلة&#10;مثال: الرب، بطرس، يهوذا"></textarea><div class="hint">يتم البحث تلقائيًا · بدون تشكيل · تجاهل علامات الترقيم · يقبل الحروف الزائدة قبل الكلمة أو بعدها</div></div>
+<div class="field"><label>السفر والإصحاح</label><div class="selects"><select id="book"></select><select id="chapter" disabled><option>تحميل الإصحاحات...</option></select></div></div>
+<div class="buttons"><button class="btn secondary" id="clear">مسح الكلمات</button><button class="btn secondary" id="restore">استعادة الكلمات المحفوظة</button></div>
+<div class="field"><label>نتيجة كل كلمة</label><div id="chips" class="chips"><span class="hint">اكتب كلمات لبدء المراجعة.</span></div></div>
+<div class="stats"><div class="stat"><b id="total">0</b><span>إجمالي الكلمات</span></div><div class="stat"><b id="hits">0</b><span>موجودة</span></div><div class="stat"><b id="misses">0</b><span>غير موجودة</span></div></div>
+<div id="notice" class="notice">جاري تجهيز واجهة المراجعة.</div>
+<div class="hint">يتم تحميل نص السفر عند اختياره من مصدر البيانات المفتوح، ثم حفظه على جهازك لتسريع فتحه لاحقًا.</div>
+</div></section>
+<section class="panel reader">
+<div class="readerhead"><div class="readername" id="readerTitle">الكتاب المقدس – فاندايك<small id="readerSub">اختر سفرًا لعرض الإصحاح</small></div><div class="nav"><button class="btn" id="prev" title="الإصحاح السابق">السابق ←</button><button class="btn" id="next" title="الإصحاح التالي">→ التالي</button></div></div>
+<div id="loading" class="loadingline" hidden><i></i></div><div id="passage" class="passage"><div class="empty"><strong>أهلًا بك في Bible Checker</strong><br>اختر السفر والإصحاح، واكتب الكلمات التي تريد مراجعتها.</div></div>
+</section></main>
+<footer>مصدر نص الكتاب: Smith–Van Dyck (SVD)، النص الكامل ذو الملكية العامة، عبر مستودع بيانات Midvash. يلزم اتصال بالإنترنت أول مرة لتحميل السفر، وبعد تحميله يُحفظ محليًا على جهازك. <a href="https://github.com/midvash/bible-data" target="_blank" rel="noopener">المصدر والترخيص</a>.</footer>
+<script>
+const BOOKS = [{"id": 1, "osis": "Gen", "name": "التكوين", "testament": "OT"}, {"id": 2, "osis": "Exod", "name": "الخروج", "testament": "OT"}, {"id": 3, "osis": "Lev", "name": "اللاويين", "testament": "OT"}, {"id": 4, "osis": "Num", "name": "العدد", "testament": "OT"}, {"id": 5, "osis": "Deut", "name": "التثنية", "testament": "OT"}, {"id": 6, "osis": "Josh", "name": "يشوع", "testament": "OT"}, {"id": 7, "osis": "Judg", "name": "القضاة", "testament": "OT"}, {"id": 8, "osis": "Ruth", "name": "راعوث", "testament": "OT"}, {"id": 9, "osis": "1Sam", "name": "صموئيل الأول", "testament": "OT"}, {"id": 10, "osis": "2Sam", "name": "صموئيل الثاني", "testament": "OT"}, {"id": 11, "osis": "1Kgs", "name": "الملوك الأول", "testament": "OT"}, {"id": 12, "osis": "2Kgs", "name": "الملوك الثاني", "testament": "OT"}, {"id": 13, "osis": "1Chr", "name": "أخبار الأيام الأول", "testament": "OT"}, {"id": 14, "osis": "2Chr", "name": "أخبار الأيام الثاني", "testament": "OT"}, {"id": 15, "osis": "Ezra", "name": "عزرا", "testament": "OT"}, {"id": 16, "osis": "Neh", "name": "نحميا", "testament": "OT"}, {"id": 17, "osis": "Esth", "name": "أستير", "testament": "OT"}, {"id": 18, "osis": "Job", "name": "أيوب", "testament": "OT"}, {"id": 19, "osis": "Ps", "name": "المزامير", "testament": "OT"}, {"id": 20, "osis": "Prov", "name": "الأمثال", "testament": "OT"}, {"id": 21, "osis": "Eccl", "name": "الجامعة", "testament": "OT"}, {"id": 22, "osis": "Song", "name": "نشيد الأنشاد", "testament": "OT"}, {"id": 23, "osis": "Isa", "name": "إشعياء", "testament": "OT"}, {"id": 24, "osis": "Jer", "name": "إرميا", "testament": "OT"}, {"id": 25, "osis": "Lam", "name": "مراثي إرميا", "testament": "OT"}, {"id": 26, "osis": "Ezek", "name": "حزقيال", "testament": "OT"}, {"id": 27, "osis": "Dan", "name": "دانيال", "testament": "OT"}, {"id": 28, "osis": "Hos", "name": "هوشع", "testament": "OT"}, {"id": 29, "osis": "Joel", "name": "يوئيل", "testament": "OT"}, {"id": 30, "osis": "Amos", "name": "عاموس", "testament": "OT"}, {"id": 31, "osis": "Obad", "name": "عوبديا", "testament": "OT"}, {"id": 32, "osis": "Jonah", "name": "يونان", "testament": "OT"}, {"id": 33, "osis": "Mic", "name": "ميخا", "testament": "OT"}, {"id": 34, "osis": "Nah", "name": "ناحوم", "testament": "OT"}, {"id": 35, "osis": "Hab", "name": "حبقوق", "testament": "OT"}, {"id": 36, "osis": "Zeph", "name": "صفنيا", "testament": "OT"}, {"id": 37, "osis": "Hag", "name": "حجي", "testament": "OT"}, {"id": 38, "osis": "Zech", "name": "زكريا", "testament": "OT"}, {"id": 39, "osis": "Mal", "name": "ملاخي", "testament": "OT"}, {"id": 40, "osis": "Matt", "name": "متى", "testament": "NT"}, {"id": 41, "osis": "Mark", "name": "مرقس", "testament": "NT"}, {"id": 42, "osis": "Luke", "name": "لوقا", "testament": "NT"}, {"id": 43, "osis": "John", "name": "يوحنا", "testament": "NT"}, {"id": 44, "osis": "Acts", "name": "أعمال الرسل", "testament": "NT"}, {"id": 45, "osis": "Rom", "name": "رومية", "testament": "NT"}, {"id": 46, "osis": "1Cor", "name": "كورنثوس الأولى", "testament": "NT"}, {"id": 47, "osis": "2Cor", "name": "كورنثوس الثانية", "testament": "NT"}, {"id": 48, "osis": "Gal", "name": "غلاطية", "testament": "NT"}, {"id": 49, "osis": "Eph", "name": "أفسس", "testament": "NT"}, {"id": 50, "osis": "Phil", "name": "فيلبي", "testament": "NT"}, {"id": 51, "osis": "Col", "name": "كولوسي", "testament": "NT"}, {"id": 52, "osis": "1Thess", "name": "تسالونيكي الأولى", "testament": "NT"}, {"id": 53, "osis": "2Thess", "name": "تسالونيكي الثانية", "testament": "NT"}, {"id": 54, "osis": "1Tim", "name": "تيموثاوس الأولى", "testament": "NT"}, {"id": 55, "osis": "2Tim", "name": "تيموثاوس الثانية", "testament": "NT"}, {"id": 56, "osis": "Titus", "name": "تيطس", "testament": "NT"}, {"id": 57, "osis": "Phlm", "name": "فليمون", "testament": "NT"}, {"id": 58, "osis": "Heb", "name": "العبرانيين", "testament": "NT"}, {"id": 59, "osis": "Jas", "name": "يعقوب", "testament": "NT"}, {"id": 60, "osis": "1Pet", "name": "بطرس الأولى", "testament": "NT"}, {"id": 61, "osis": "2Pet", "name": "بطرس الثانية", "testament": "NT"}, {"id": 62, "osis": "1John", "name": "يوحنا الأولى", "testament": "NT"}, {"id": 63, "osis": "2John", "name": "يوحنا الثانية", "testament": "NT"}, {"id": 64, "osis": "3John", "name": "يوحنا الثالثة", "testament": "NT"}, {"id": 65, "osis": "Jude", "name": "يهوذا", "testament": "NT"}, {"id": 66, "osis": "Rev", "name": "الرؤيا", "testament": "NT"}];
+const DATA_BASE="https://raw.githubusercontent.com/midvash/bible-data/main/versions/ar/svd/books/";
+const $=id=>document.getElementById(id);
+let currentBook=BOOKS[39], currentChapter=1, bookCache={}, loadToken=0, activeVerses=[];
+const normalize=s=>String(s??"").normalize("NFD").replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").replace(/[ٱأإآ]/g,"ا").replace(/ى/g,"ي").replace(/ؤ/g,"و").replace(/ئ/g,"ي").replace(/[ـ]/g,"").toLowerCase();
+const cleanTokens=s=>normalize(s).replace(/[^\p{L}\p{N}\s]/gu," ").split(/\s+/).filter(Boolean);
+const parseWords=()=>[...new Set($("words").value.split(/[،,;؛\n\r]+/).map(x=>x.trim()).filter(Boolean))];
+const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function getChapter(){return bookCache[currentBook.osis]?.chapters?.find(c=>Number(c.chapter)===Number(currentChapter))?.verses||[]}
+function countWord(word,verses){const needle=normalize(word).replace(/[^\p{L}\p{N}]/gu,"");if(!needle)return 0;let count=0;for(const verse of verses){const text=normalize(verse.text).replace(/[^\p{L}\p{N}]/gu,"");let pos=0;while((pos=text.indexOf(needle,pos))!==-1){count++;pos+=Math.max(1,needle.length)}}return count}
+function makeHighlighted(text,words){
+ const original=Array.from(text);let compact="",map=[];
+ for(let i=0;i<original.length;i++){for(const c of Array.from(normalize(original[i]))){if(/[\p{L}\p{N}]/u.test(c)){compact+=c;map.push(i)}}}
+ let ranges=[];
+ for(const word of words){const needle=normalize(word).replace(/[^\p{L}\p{N}]/gu,"");if(!needle)continue;let at=0;while((at=compact.indexOf(needle,at))!==-1){ranges.push([map[at],map[at+needle.length-1]+1]);at+=Math.max(1,needle.length)}}
+ ranges.sort((a,b)=>a[0]-b[0]);let merged=[];
+ for(const r of ranges){const last=merged[merged.length-1];if(last&&r[0]<=last[1])last[1]=Math.max(last[1],r[1]);else merged.push(r)}
+ let out="",cursor=0;for(const [a,b] of merged){out+=escapeHTML(original.slice(cursor,a).join(""))+'<mark class="mark">'+escapeHTML(original.slice(a,b).join(""))+'</mark>';cursor=b}
+ return out+escapeHTML(original.slice(cursor).join(""));
+}
+function render(){
+ const verses=activeVerses, words=parseWords(), counts=words.map(w=>countWord(w,verses));
+ $("total").textContent=words.length;$("hits").textContent=counts.filter(n=>n>0).length;$("misses").textContent=counts.filter(n=>n===0).length;
+ $("chips").innerHTML=words.length?words.map((w,i)=>`<span class="chip ${counts[i]?"hit":"miss"}">${escapeHTML(w)} ${counts[i]?"✓ "+counts[i]:"✕"}</span>`).join(""):'<span class="hint">اكتب كلمات لبدء المراجعة.</span>';
+ const notice=$("notice");
+ if(!verses.length){notice.className="notice";notice.textContent="لا توجد آيات معروضة حاليًا.";return}
+ if(!words.length){notice.className="notice";notice.textContent="أدخل الكلمات وسيتم التحقق منها تلقائيًا."}
+ else if(counts.every(n=>n>0)){notice.className="notice good";notice.textContent="ممتاز! كل الكلمات موجودة في هذا الإصحاح."}
+ else {const absent=words.filter((w,i)=>counts[i]===0);notice.className="notice bad";notice.textContent="الكلمات غير الموجودة في هذا الإصحاح: "+absent.join("، ")}
+ $("passage").innerHTML=verses.map(v=>`<p class="verse"><sup class="vnum">${v.number}</sup>${makeHighlighted(v.text,words)}</p>`).join("");
+ $("readerTitle").childNodes[0].textContent=currentBook.name+" – الإصحاح "+currentChapter;
+ $("readerSub").textContent="ترجمة فاندايك · "+verses.length+" آية";
+}
+async function getStored(osis){try{return await new Promise(resolve=>{const req=indexedDB.open("BibleCheckerCache",1);req.onupgradeneeded=()=>req.result.createObjectStore("books");req.onsuccess=()=>{const db=req.result;const r=db.transaction("books").objectStore("books").get(osis);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>resolve(null)};req.onerror=()=>resolve(null)})}catch{return null}}
+async function storeBook(osis,data){try{await new Promise(resolve=>{const req=indexedDB.open("BibleCheckerCache",1);req.onupgradeneeded=()=>req.result.createObjectStore("books");req.onsuccess=()=>{const tx=req.result.transaction("books","readwrite");tx.objectStore("books").put(data,osis);tx.oncomplete=resolve;tx.onerror=resolve};req.onerror=resolve})}catch{}}
+async function loadBook(book){
+ const token=++loadToken;$("loading").hidden=false;$("notice").className="notice loading";$("notice").textContent="جاري تحميل سفر "+book.name+"...";
+ $("passage").innerHTML='<div class="empty">جاري تحميل نص السفر...</div>';
+ try{
+  let data=bookCache[book.osis]||await getStored(book.osis);
+  if(!data){const res=await fetch(DATA_BASE+book.osis+".json");if(!res.ok)throw new Error("HTTP "+res.status);data=await res.json();if(!Array.isArray(data.chapters))throw new Error("صيغة البيانات غير متوقعة");await storeBook(book.osis,data)}
+  if(token!==loadToken)return;bookCache[book.osis]=data;
+  const chapters=data.chapters||[];if(!chapters.length)throw new Error("لا توجد إصحاحات في ملف السفر");
+  currentChapter=Math.min(Math.max(1,currentChapter),chapters.length);
+  $("chapter").innerHTML=chapters.map(c=>`<option value="${c.chapter}">الإصحاح ${c.chapter}</option>`).join("");
+  $("chapter").disabled=false;$("chapter").value=currentChapter;activeVerses=getChapter();render();
+ }catch(e){if(token!==loadToken)return;$("chapter").disabled=true;$("passage").innerHTML='<div class="empty"><strong>تعذر تحميل نص السفر.</strong><br>تأكد من اتصال الإنترنت ثم أعد اختيار السفر.<br><small>'+escapeHTML(e.message)+'</small></div>';$("notice").className="notice bad";$("notice").textContent="فشل تحميل بيانات السفر. حاول مرة أخرى عند توفر الإنترنت."}
+ finally{if(token===loadToken)$("loading").hidden=true}
+}
+function goChapter(delta){const data=bookCache[currentBook.osis];if(!data)return;const max=data.chapters.length;let next=currentChapter+delta;if(next<1||next>max){const idx=BOOKS.findIndex(b=>b.osis===currentBook.osis)+Math.sign(delta);if(idx<0||idx>=BOOKS.length)return;currentBook=BOOKS[idx];$("book").value=currentBook.osis;currentChapter=delta>0?1:999;loadBook(currentBook);return}currentChapter=next;$("chapter").value=next;activeVerses=getChapter();render();$("passage").scrollTop=0}
+function init(){ $("book").innerHTML=BOOKS.map(b=>`<option value="${b.osis}">${b.name}</option>`).join("");$("book").value=currentBook.osis;$("words").value=localStorage.getItem("bibleCheckerWords")||"";loadBook(currentBook)}
+$("words").addEventListener("input",()=>{localStorage.setItem("bibleCheckerWords",$("words").value);render()});
+$("book").addEventListener("change",()=>{currentBook=BOOKS.find(b=>b.osis===$("book").value);currentChapter=1;loadBook(currentBook)});
+$("chapter").addEventListener("change",()=>{currentChapter=Number($("chapter").value);activeVerses=getChapter();render();$("passage").scrollTop=0});
+$("prev").addEventListener("click",()=>goChapter(-1));$("next").addEventListener("click",()=>goChapter(1));
+$("clear").addEventListener("click",()=>{$("words").value="";localStorage.setItem("bibleCheckerWords","");render()});
+$("restore").addEventListener("click",()=>{$("words").value=localStorage.getItem("bibleCheckerWords")||"";render()});
+init();
+</script></body></html>
