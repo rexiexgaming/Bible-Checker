@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909"><title>Bible Checker | مراجعة الشواهد</title>
+<style>
+:root{color-scheme:dark;--bg:#090909;--line:#3a2d19;--gold:#d7ad58;--gold2:#f3d99d;--text:#f5f0e6;--muted:#a99f8d;--green:#5cc58b;--red:#f08080}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#342713 0,#111 32%,#080808 72%);color:var(--text);font-family:Tahoma,Arial,sans-serif;min-height:100vh}
+header{min-height:70px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:#090909ed;position:sticky;top:0;z-index:5;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:1.3px}.logo{width:40px;height:40px;border:1px solid var(--gold);border-radius:13px;display:grid;place-items:center;color:var(--gold);font-size:21px}.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:2px;margin-top:4px}
+a{color:var(--gold2);text-decoration:none}.navlink,.btn{border:1px solid #80612e;background:#261d0e;color:var(--gold2);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:700;font-family:inherit;font-size:12px}
+main{max-width:1500px;margin:auto;padding:20px;display:grid;grid-template-columns:minmax(300px,.78fr) minmax(0,1.5fr);gap:18px;align-items:start}
+.panel{background:linear-gradient(155deg,#171717,#101010);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 18px 50px #0008}
+.head{padding:17px 19px;border-bottom:1px solid #302719;display:flex;justify-content:space-between;align-items:center}.head h2{font-size:15px;margin:0}.eyebrow{font-size:9px;color:var(--gold);letter-spacing:1.5px}
+.pad{padding:17px;display:grid;gap:13px}label{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}
+textarea{width:100%;min-height:420px;resize:vertical;background:#090909;border:1px solid #423522;color:var(--text);border-radius:11px;padding:13px;font:13px/1.9 Tahoma;outline:none}textarea:focus{border-color:var(--gold)}
+.hint{font-size:10px;color:#938978;line-height:1.8}.buttons{display:flex;gap:8px;flex-wrap:wrap}.btn.secondary{background:#191919;border-color:#42392b;color:#ded3bd}
+.status{padding:11px 12px;border:1px solid #4b3a1f;background:#1b160d;border-radius:10px;font-size:12px;line-height:1.8;color:#e5d4af}.status.good{background:#102019;border-color:#286744;color:#a5e7c1}.status.bad{background:#251313;border-color:#793f3f;color:#ffb4b4}
+.results{padding:15px;display:grid;gap:12px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{background:#0b0b0b;border:1px solid #302719;border-radius:11px;padding:10px;text-align:center}.stat b{display:block;color:var(--gold2);font-size:20px}.stat span{font-size:10px;color:var(--muted)}
+.refcard{border:1px solid #352a1a;border-radius:13px;overflow:hidden;background:#111}.refhead{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#19150e;border-bottom:1px solid #302719}.refhead strong{font-size:13px}.pill{font-size:10px;padding:5px 9px;border-radius:20px;border:1px solid #735b31;color:var(--gold2)}.pill.ok{border-color:#286744;color:#a5e7c1;background:#102019}.pill.fail{border-color:#793f3f;color:#ffb4b4;background:#251313}
+.words{display:flex;flex-wrap:wrap;gap:6px;padding:10px 13px;border-bottom:1px solid #29231a}.word{font-size:11px;padding:5px 8px;border:1px solid #793f3f;border-radius:20px;color:#ffb4b4;background:#251313}.word.ok{border-color:#286744;color:#a5e7c1;background:#102019}
+.verses{padding:10px 15px;line-height:2.2;font-size:15px}.verse{margin:0 0 7px}.vnum{font-size:10px;color:var(--gold);vertical-align:super;margin-left:5px}.mark{background:#73551d;color:#fff0c7;border-radius:3px;padding:1px 2px;box-shadow:0 0 0 1px #d7ad5840}
+.loading{height:3px;background:#2b2418;overflow:hidden}.loading i{display:block;height:100%;width:35%;background:var(--gold);animation:load 1.2s infinite ease-in-out}@keyframes load{from{transform:translateX(220%)}to{transform:translateX(-350%)}}
+.empty{padding:35px 18px;text-align:center;color:var(--muted);font-size:12px;line-height:2}
+@media(max-width:850px){main{grid-template-columns:1fr;padding:11px;gap:12px}textarea{min-height:300px}header{padding:10px 13px}.brand{font-size:12px}.logo{width:35px;height:35px}.navlink{font-size:10px;padding:8px}.summary{grid-template-columns:repeat(2,1fr)}.verses{font-size:14px}}
+</style></head>
+<body>
+<header><div class="brand"><div class="logo">✦</div><div>BIBLE CHECKER<small>BULK REFERENCE REVIEW</small></div></div><a class="navlink" href="index.html">العودة للبحث الفردي</a></header>
+<main>
+<section class="panel">
+ <div class="head"><h2>إدخال قائمة الشواهد</h2><span class="eyebrow">SMART PARSER</span></div>
+ <div class="pad">
+  <div><label for="source">الصق النص كما هو</label><textarea id="source" placeholder="مت 1&#10;يجتمعا، يشهرها، حبلي&#10;مت 5 (1-20)&#10;طوبي، سراجًا، مكيال&#10;مر 1 (1-20)&#10;إنجيل، سبله، كورة"></textarea><div class="hint">يفهم اختصارات الأسفار مثل «مت» و«مر»، ورقم الإصحاح، ونطاق الآيات بين قوسين. كل سطر عنوان يليه سطر الكلمات.</div></div>
+  <div class="buttons"><button class="btn" id="run">تحليل الشواهد والتحقق</button><button class="btn secondary" id="clear">مسح النص</button></div>
+  <div id="status" class="status">الصق قائمتك واضغط «تحليل الشواهد والتحقق».</div>
+  <div class="hint">المطابقة جزئية داخل الكلمة: «براهين» تطابق «ببراهين». يتم تجاهل التشكيل وعلامات الترقيم. عند تحديد نطاق مثل (1-20)، يفحص الموقع الآيات من 1 إلى 20 فقط.</div>
+ </div>
+</section>
+<section class="panel">
+ <div class="head"><h2>نتائج المراجعة</h2><span class="eyebrow">LIVE VERIFICATION</span></div>
+ <div class="loading" id="loading" hidden><i></i></div>
+ <div class="results">
+  <div class="summary"><div class="stat"><b id="refs">0</b><span>شواهد</span></div><div class="stat"><b id="total">0</b><span>كلمات</span></div><div class="stat"><b id="found">0</b><span>موجودة</span></div><div class="stat"><b id="missing">0</b><span>غير موجودة</span></div></div>
+  <div id="output"><div class="empty">ستظهر هنا نتائج كل إصحاح، مع تمييز الكلمات الموجودة وعرض الكلمات الناقصة.</div></div>
+ </div>
+</section>
+</main>
+<script>
+const BOOKS = [{"id": 1, "osis": "Gen", "name": "التكوين", "testament": "OT"}, {"id": 2, "osis": "Exod", "name": "الخروج", "testament": "OT"}, {"id": 3, "osis": "Lev", "name": "اللاويين", "testament": "OT"}, {"id": 4, "osis": "Num", "name": "العدد", "testament": "OT"}, {"id": 5, "osis": "Deut", "name": "التثنية", "testament": "OT"}, {"id": 6, "osis": "Josh", "name": "يشوع", "testament": "OT"}, {"id": 7, "osis": "Judg", "name": "القضاة", "testament": "OT"}, {"id": 8, "osis": "Ruth", "name": "راعوث", "testament": "OT"}, {"id": 9, "osis": "1Sam", "name": "صموئيل الأول", "testament": "OT"}, {"id": 10, "osis": "2Sam", "name": "صموئيل الثاني", "testament": "OT"}, {"id": 11, "osis": "1Kgs", "name": "الملوك الأول", "testament": "OT"}, {"id": 12, "osis": "2Kgs", "name": "الملوك الثاني", "testament": "OT"}, {"id": 13, "osis": "1Chr", "name": "أخبار الأيام الأول", "testament": "OT"}, {"id": 14, "osis": "2Chr", "name": "أخبار الأيام الثاني", "testament": "OT"}, {"id": 15, "osis": "Ezra", "name": "عزرا", "testament": "OT"}, {"id": 16, "osis": "Neh", "name": "نحميا", "testament": "OT"}, {"id": 17, "osis": "Esth", "name": "أستير", "testament": "OT"}, {"id": 18, "osis": "Job", "name": "أيوب", "testament": "OT"}, {"id": 19, "osis": "Ps", "name": "المزامير", "testament": "OT"}, {"id": 20, "osis": "Prov", "name": "الأمثال", "testament": "OT"}, {"id": 21, "osis": "Eccl", "name": "الجامعة", "testament": "OT"}, {"id": 22, "osis": "Song", "name": "نشيد الأنشاد", "testament": "OT"}, {"id": 23, "osis": "Isa", "name": "إشعياء", "testament": "OT"}, {"id": 24, "osis": "Jer", "name": "إرميا", "testament": "OT"}, {"id": 25, "osis": "Lam", "name": "مراثي إرميا", "testament": "OT"}, {"id": 26, "osis": "Ezek", "name": "حزقيال", "testament": "OT"}, {"id": 27, "osis": "Dan", "name": "دانيال", "testament": "OT"}, {"id": 28, "osis": "Hos", "name": "هوشع", "testament": "OT"}, {"id": 29, "osis": "Joel", "name": "يوئيل", "testament": "OT"}, {"id": 30, "osis": "Amos", "name": "عاموس", "testament": "OT"}, {"id": 31, "osis": "Obad", "name": "عوبديا", "testament": "OT"}, {"id": 32, "osis": "Jonah", "name": "يونان", "testament": "OT"}, {"id": 33, "osis": "Mic", "name": "ميخا", "testament": "OT"}, {"id": 34, "osis": "Nah", "name": "ناحوم", "testament": "OT"}, {"id": 35, "osis": "Hab", "name": "حبقوق", "testament": "OT"}, {"id": 36, "osis": "Zeph", "name": "صفنيا", "testament": "OT"}, {"id": 37, "osis": "Hag", "name": "حجي", "testament": "OT"}, {"id": 38, "osis": "Zech", "name": "زكريا", "testament": "OT"}, {"id": 39, "osis": "Mal", "name": "ملاخي", "testament": "OT"}, {"id": 40, "osis": "Matt", "name": "متى", "testament": "NT"}, {"id": 41, "osis": "Mark", "name": "مرقس", "testament": "NT"}, {"id": 42, "osis": "Luke", "name": "لوقا", "testament": "NT"}, {"id": 43, "osis": "John", "name": "يوحنا", "testament": "NT"}, {"id": 44, "osis": "Acts", "name": "أعمال الرسل", "testament": "NT"}, {"id": 45, "osis": "Rom", "name": "رومية", "testament": "NT"}, {"id": 46, "osis": "1Cor", "name": "كورنثوس الأولى", "testament": "NT"}, {"id": 47, "osis": "2Cor", "name": "كورنثوس الثانية", "testament": "NT"}, {"id": 48, "osis": "Gal", "name": "غلاطية", "testament": "NT"}, {"id": 49, "osis": "Eph", "name": "أفسس", "testament": "NT"}, {"id": 50, "osis": "Phil", "name": "فيلبي", "testament": "NT"}, {"id": 51, "osis": "Col", "name": "كولوسي", "testament": "NT"}, {"id": 52, "osis": "1Thess", "name": "تسالونيكي الأولى", "testament": "NT"}, {"id": 53, "osis": "2Thess", "name": "تسالونيكي الثانية", "testament": "NT"}, {"id": 54, "osis": "1Tim", "name": "تيموثاوس الأولى", "testament": "NT"}, {"id": 55, "osis": "2Tim", "name": "تيموثاوس الثانية", "testament": "NT"}, {"id": 56, "osis": "Titus", "name": "تيطس", "testament": "NT"}, {"id": 57, "osis": "Phlm", "name": "فليمون", "testament": "NT"}, {"id": 58, "osis": "Heb", "name": "العبرانيين", "testament": "NT"}, {"id": 59, "osis": "Jas", "name": "يعقوب", "testament": "NT"}, {"id": 60, "osis": "1Pet", "name": "بطرس الأولى", "testament": "NT"}, {"id": 61, "osis": "2Pet", "name": "بطرس الثانية", "testament": "NT"}, {"id": 62, "osis": "1John", "name": "يوحنا الأولى", "testament": "NT"}, {"id": 63, "osis": "2John", "name": "يوحنا الثانية", "testament": "NT"}, {"id": 64, "osis": "3John", "name": "يوحنا الثالثة", "testament": "NT"}, {"id": 65, "osis": "Jude", "name": "يهوذا", "testament": "NT"}, {"id": 66, "osis": "Rev", "name": "الرؤيا", "testament": "NT"}];
+const DATA_BASE="https://raw.githubusercontent.com/midvash/bible-data/main/versions/ar/svd/books/";
+const $=id=>document.getElementById(id);
+const normalize=s=>String(s??"").normalize("NFD").replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").replace(/[ٱأإآ]/g,"ا").replace(/ى/g,"ي").replace(/ؤ/g,"و").replace(/ئ/g,"ي").replace(/[ـ]/g,"").toLowerCase();
+const compact=s=>normalize(s).replace(/[^\p{L}\p{N}]/gu,"");
+const searchCompact=s=>normalize(s).split(/[^\p{L}\p{N}]+/u).filter(Boolean).map(w=>w.replace(/^ال(?=.{2,}$)/u,"")).join("");
+function compactTextWithMap(text){const chars=Array.from(text);let hay="",map=[],wordStart=true,skipLam=false;chars.forEach((ch,i)=>{for(const c of Array.from(normalize(ch))){if(/[\p{L}\p{N}]/u.test(c)){if(wordStart&&c==="ا"){skipLam=true;wordStart=false;continue}if(skipLam&&c==="ل"){skipLam=false;continue}skipLam=false;hay+=c;map.push(i);wordStart=false}else{wordStart=true;skipLam=false}}});return {hay,map};}
+const aliases={
+"مت":"Matt","متى":"Matt","انجيل متى":"Matt","إنجيل متى":"Matt",
+"مر":"Mark","مرقس":"Mark","انجيل مرقس":"Mark","إنجيل مرقس":"Mark",
+"لو":"Luke","لوقا":"Luke","يو":"John","يوحنا":"John","اع":"Acts","أع":"Acts","اعمال":"Acts","أعمال":"Acts",
+"تك":"Gen","تكوين":"Gen","خر":"Exod","خروج":"Exod","لا":"Lev","لاويين":"Lev","عد":"Num","عدد":"Num","تث":"Deut","تثنية":"Deut",
+"يش":"Josh","يشوع":"Josh","قض":"Judg","قضاة":"Judg","را":"Ruth","راعوث":"Ruth",
+"1صم":"1Sam","2صم":"2Sam","1مل":"1Kgs","2مل":"2Kgs","1اخ":"1Chr","2اخ":"2Chr",
+"عز":"Ezra","نح":"Neh","اس":"Esth","أستير":"Esth","اي":"Job","أيوب":"Job","مز":"Ps","مزامير":"Ps","ام":"Prov","أمثال":"Prov",
+"جا":"Eccl","نش":"Song","اش":"Isa","إش":"Isa","ار":"Jer","إر":"Jer","مرا":"Lam","حز":"Ezek","دا":"Dan",
+"هو":"Hos","يؤ":"Joel","عا":"Amos","عو":"Obad","يون":"Jonah","مي":"Mic","نا":"Nah","حب":"Hab","صف":"Zeph","حج":"Hag","زك":"Zech","ملا":"Mal",
+"رو":"Rom","رومية":"Rom","1كو":"1Cor","2كو":"2Cor","غل":"Gal","اف":"Eph","أف":"Eph","في":"Phil","كو":"Col","1تس":"1Thess","2تس":"2Thess",
+"1تي":"1Tim","2تي":"2Tim","تي":"Titus","فل":"Phlm","عب":"Heb","يع":"Jas","1بط":"1Pet","2بط":"2Pet","1يو":"1John","2يو":"2John","3يو":"3John","يه":"Jude","رؤ":"Rev"
+};
+const byOsis=Object.fromEntries(BOOKS.map(b=>[b.osis,b]));
+const cache={};
+function resolveBook(label){
+ const raw=label.trim().replace(/[.،:]+$/,"");
+ if(aliases[raw])return byOsis[aliases[raw]];
+ const n=normalize(raw);
+ const match=BOOKS.find(b=>normalize(b.name)===n);
+ return match||null;
+}
+function parseInput(text){
+ const lines=text.split(/\r?\n/).map(x=>x.trim()).filter(Boolean), refs=[];let current=null,errors=[];
+ for(let i=0;i<lines.length;i++){
+  const line=lines[i];
+  const m=line.match(/^(.+?)\s+(\d+)\s*(?:\(\s*(\d+)\s*[-–—]\s*(\d+)\s*\))?\s*$/);
+  if(m){
+   const book=resolveBook(m[1]);
+   if(!book){errors.push(`لم أتعرف على السفر في السطر: ${line}`);current=null;continue}
+   current={book,chapter:Number(m[2]),from:m[3]?Number(m[3]):1,to:m[4]?Number(m[4]):null,words:[]};
+   refs.push(current);
+  }else if(current){
+   current.words.push(...line.split(/[،,؛;]+/).map(w=>w.trim()).filter(Boolean));
+  }else errors.push(`سطر غير مفهوم: ${line}`);
+ }
+ refs.forEach(r=>{r.words=[...new Set(r.words)]});
+ return {refs:refs.filter(r=>r.words.length),errors};
+}
+function countAndRanges(term,verses){
+ const needle=searchCompact(term);if(!needle)return {count:0,ranges:[]};
+ let count=0,ranges=[];
+ for(const v of verses){
+  const chars=Array.from(v.text);const {hay,map}=compactTextWithMap(v.text);
+  let at=0;while((at=hay.indexOf(needle,at))!==-1){count++;ranges.push({verse:v.number,start:map[at],end:map[at+needle.length-1]+1});at+=Math.max(1,needle.length)}
+ }
+ return {count,ranges};
+}
+function highlightVerse(text,terms){
+ const chars=Array.from(text);let ranges=[];
+ for(const term of terms){const needle=searchCompact(term);if(!needle)continue;const {hay,map}=compactTextWithMap(text);
+  let at=0;while((at=hay.indexOf(needle,at))!==-1){ranges.push([map[at],map[at+needle.length-1]+1]);at+=Math.max(1,needle.length)}
+ }
+ ranges.sort((a,b)=>a[0]-b[0]);let merged=[];for(const r of ranges){const last=merged.at(-1);if(last&&r[0]<=last[1])last[1]=Math.max(last[1],r[1]);else merged.push(r)}
+ let out="",pos=0;for(const [a,b] of merged){out+=esc(chars.slice(pos,a).join(""))+'<mark class="mark">'+esc(chars.slice(a,b).join(""))+'</mark>';pos=b}return out+esc(chars.slice(pos).join(""));
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function fetchBook(book){
+ if(cache[book.osis])return cache[book.osis];
+ const r=await fetch(DATA_BASE+book.osis+".json");if(!r.ok)throw new Error("تعذر تحميل "+book.name+" ("+r.status+")");
+ const d=await r.json();if(!Array.isArray(d.chapters))throw new Error("صيغة بيانات غير متوقعة في "+book.name);
+ cache[book.osis]=d;return d;
+}
+async function run(){
+ const parsed=parseInput($("source").value);
+ $("refs").textContent=parsed.refs.length;$("total").textContent=parsed.refs.reduce((n,r)=>n+r.words.length,0);
+ $("found").textContent="0";$("missing").textContent="0";$("output").innerHTML="";
+ if(!parsed.refs.length){$("status").className="status bad";$("status").textContent=parsed.errors.join(" · ")||"لم أجد شواهد قابلة للتحليل.";return}
+ $("loading").hidden=false;$("status").className="status";$("status").textContent="جاري قراءة الشواهد وتحميل نصوص الأسفار...";
+ let totalWords=0,foundWords=0,missingWords=0,html="",failed=[];
+ for(const ref of parsed.refs){
+  try{
+   const data=await fetchBook(ref.book), chapter=data.chapters.find(c=>Number(c.chapter)===ref.chapter);
+   if(!chapter)throw new Error("الإصحاح "+ref.chapter+" غير موجود");
+   const verses=chapter.verses.filter(v=>Number(v.number)>=(ref.from||1)&&(ref.to===null||Number(v.number)<=ref.to));
+   if(!verses.length)throw new Error("نطاق الآيات غير موجود");
+   const states=ref.words.map(w=>({word:w,...countAndRanges(w,verses)}));
+   const found=states.filter(x=>x.count>0),missing=states.filter(x=>x.count===0);
+   totalWords+=states.length;foundWords+=found.length;missingWords+=missing.length;
+   const terms=found.map(x=>x.word);
+   const title=ref.book.name+" "+ref.chapter+(ref.to!==null?` (${ref.from}-${ref.to})`:ref.from>1?` (من ${ref.from})`:"");
+   html+=`<article class="refcard"><div class="refhead"><strong>${esc(title)}</strong><span class="pill ${missing.length?"fail":"ok"}">${found.length}/${states.length} كلمات موجودة</span></div><div class="words">${states.map(x=>`<span class="word ${x.count?"ok":""}">${esc(x.word)} ${x.count?"✓ ("+x.count+")":"✕"}</span>`).join("")}</div><div class="verses">`;
+   html+=verses.map(v=>`<p class="verse"><sup class="vnum">${v.number}</sup>${highlightVerse(v.text,terms)}</p>`).join("");
+   html+="</div></article>";
+  }catch(e){failed.push(`${ref.book.name} ${ref.chapter}: ${e.message}`);html+=`<article class="refcard"><div class="refhead"><strong>${esc(ref.book.name+" "+ref.chapter)}</strong><span class="pill fail">تعذر التحقق</span></div><div class="verses">${esc(e.message)}</div></article>`}
+  $("output").innerHTML=html;
+  $("found").textContent=foundWords;$("missing").textContent=missingWords;
+ }
+ $("loading").hidden=true;
+ const issues=[...parsed.errors,...failed];
+ $("status").className=issues.length?"status bad":missingWords?"status bad":"status good";
+ $("status").textContent=issues.length?`انتهى الفحص مع ${issues.length} ملاحظة: ${issues.join(" | ")}`:missingWords?`انتهى الفحص: ${missingWords} كلمة غير موجودة في نطاقاتها.`:"ممتاز! كل الكلمات موجودة في الشواهد المحددة.";
+}
+$("run").addEventListener("click",run);
+$("clear").addEventListener("click",()=>{$("source").value="";$("output").innerHTML='<div class="empty">ستظهر هنا نتائج كل إصحاح.</div>';$("status").className="status";$("status").textContent="تم مسح النص.";$("refs").textContent=$("total").textContent=$("found").textContent=$("missing").textContent="0"});
+</script></body></html>
